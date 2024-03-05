@@ -207,7 +207,9 @@ function lzwDecode(minCodeSize, data, pixelCount) {
     let top = 0;
     let pi = 0;
     let bi = 0;
-    for (i = 0; i < npix;) {
+    let i = 0;
+    let datum = 0;
+    for (i = 0; i < pixelCount;) {
         if (top === 0) {
             if (bits < codeSize) {
                 datum += data[bi] << bits
