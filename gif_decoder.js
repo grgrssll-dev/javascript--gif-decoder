@@ -170,14 +170,10 @@ function decodeCommentExtension(dv, byteOffset) {
         output.hex.push(decToHex(byte));
         output.comment.push(String.fromCharCode(byte));
     }
-    output.loopCount = dv.getUint16(offset, true);
-    offset += 2;
     output.terminator = decToHex(dv.getUint8(offset));
     offset++;
     output.hex = output.hex.join('');
     output.comment = output.comment.join('');
-    output.hex = output.hex.join('');
-    output.text = output.text.join('');
     offsets._end = offset;
     return {
         offset,
