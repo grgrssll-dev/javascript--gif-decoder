@@ -672,7 +672,7 @@ class GifFrame {
                     sizeOfLocalColorTable: this.#sizeOfLocalColorTable,
                 }),
             }),
-            localColorTable: Object.freeze(this.getLocalColorTable()),
+            localColorTable: Object.freeze(this.getLocalColorTable().map((c) => c.toHex())),
             minCodeSize: this.#minCodeSize,
             compressedPixelData: Object.freeze(this.#encodedData),
             imageDataStream: Object.freeze(this.#imageDataStream),
@@ -1014,7 +1014,7 @@ export default class GifDecoder {
                 backgroundColorIndex: this.#backgroundColorIndex,
                 pixelAspectRatio: this.#pixelAspectRatio,
             }),
-            globalColorTable: Object.freeze(this.getGlobalColorTable()),
+            globalColorTable: Object.freeze(this.getGlobalColorTable().map((c) => c.toHex())),
             frames: Object.freeze(this.getFrames().map((v) => v.toObject())),
             extensions: Object.freeze({
                 ...(Object.keys(this.#textExtension).length ? {
