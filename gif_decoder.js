@@ -67,6 +67,7 @@ function decodeTextExtension(dv, byteOffset) {
         label: null,
         text: [],
         hex: [],
+        terminator: null,
     };
     const offsets = {
         _start: offset,
@@ -90,7 +91,7 @@ function decodeTextExtension(dv, byteOffset) {
         offset++;
     }
     output.terminator = decToHex(byteSize);
-    output.hex = output.hex.join('');
+    output.hex = output.hex.join(' ');
     output.text = output.text.join('');
     offsets._end = offset;
     return {
@@ -107,6 +108,8 @@ function decodeApplicationExtension(dv, byteOffset) {
         label: null,
         application: [],
         hex: [],
+        subblock: null,
+        skip: null,
         loopCount: null,
         terminator: null,
     };
@@ -135,7 +138,7 @@ function decodeApplicationExtension(dv, byteOffset) {
     offset += 2;
     output.terminator = decToHex(dv.getUint8(offset));
     offset++;
-    output.hex = output.hex.join('');
+    output.hex = output.hex.join('  ');
     output.application = output.application.join('');
     offsets._end = offset;
     return {
@@ -152,6 +155,7 @@ function decodeCommentExtension(dv, byteOffset) {
         label: null,
         comment: [],
         hex: [],
+        terminator: null,
     };
     const offsets = {
         _start: offset,
@@ -172,7 +176,7 @@ function decodeCommentExtension(dv, byteOffset) {
     }
     output.terminator = decToHex(dv.getUint8(offset));
     offset++;
-    output.hex = output.hex.join('');
+    output.hex = output.hex.join(' ');
     output.comment = output.comment.join('');
     offsets._end = offset;
     return {
@@ -672,7 +676,7 @@ class GifFrame {
                     sizeOfLocalColorTable: this.#sizeOfLocalColorTable,
                 }),
             }),
-            localColorTable: Object.freeze(this.getLocalColorTable().map((c) => c.toHex())),
+            localColorTable: this.getLocalColorTable().map((c) => c.toHex()),
             minCodeSize: this.#minCodeSize,
             compressedPixelData: Object.freeze(this.#encodedData),
             imageDataStream: Object.freeze(this.#imageDataStream),
@@ -715,7 +719,7 @@ class GifFrame {
         if (this.#localColorTableFlag) {
             return this.#localColorTable;
         } else {
-            return null;
+            return [];
         }
     }
 
@@ -1014,7 +1018,7 @@ export default class GifDecoder {
                 backgroundColorIndex: this.#backgroundColorIndex,
                 pixelAspectRatio: this.#pixelAspectRatio,
             }),
-            globalColorTable: Object.freeze(this.getGlobalColorTable().map((c) => c.toHex())),
+            globalColorTable: this.getGlobalColorTable().map((c) => c.toHex()),
             frames: Object.freeze(this.getFrames().map((v) => v.toObject())),
             extensions: Object.freeze({
                 ...(Object.keys(this.#textExtension).length ? {
@@ -1044,7 +1048,7 @@ export default class GifDecoder {
         if (this.#globalColorTableFlag) {
             return this.#globalColorTable;
         } else {
-            return null;
+            return [];
         }
     }
 
