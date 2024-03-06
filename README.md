@@ -67,4 +67,6 @@ frames.forEach((frame) => {
 
 Readme is a WIP, I'll add more methods/usage examples soon
 
-Demo coming soon at https://gif.grgr.us
+Demo @ https://gif.grgr.us 
+
+Demo repo @ https://github.com/grgrssll-dev/gif-displayer
