@@ -226,24 +226,24 @@ function lzwDecode(minCodeSize, data, pixelCount) {
             code = datum & codeMask
             datum >>= codeSize
             bits -= codeSize
-            if (code > available || code == eof) {
+            if (code > available || code === eof) {
                 break
             }
-            if (code == clear) {
+            if (code === clear) {
                 codeSize = dataSize + 1
                 codeMask = (1 << codeSize) - 1
                 available = clear + 2
                 oldCode = nullCode
                 continue
             }
-            if (oldCode == nullCode) {
+            if (oldCode === nullCode) {
                 pixelStack[top++] = suffix[code]
                 oldCode = code
                 first = code
                 continue
             }
             let inCode = code
-            if (code == available) {
+            if (code === available) {
                 pixelStack[top++] = first
                 code = oldCode
             }
